@@ -24,7 +24,19 @@ class Post extends Authenticatable
         'page_id',
         'comments',
         'likes',
+        'image',
+        'images',
         'created_time'
+    ];
+
+     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+
+     */
+    protected $casts = [
+        'images' => 'array'
     ];
 
 }

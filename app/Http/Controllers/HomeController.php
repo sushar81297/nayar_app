@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\Group;
 use Hash;
   
 class HomeController extends Controller
@@ -21,7 +22,7 @@ class HomeController extends Controller
         if(Auth::check()){
             $pages = Page::where('user_id', Auth::user()->id)->get();
 
-            return view('dashboard', compact('pages'));
+            return view('home', compact('pages'));
         }
   
         return redirect("login")->withSuccess('Opps! You do not have access');
@@ -41,6 +42,13 @@ class HomeController extends Controller
         $page_name = $page->page_name;
 
         return view('post', compact('posts', 'page_name'));
+    }  
+
+    public function group()
+    {
+        $groups = Group::where('user_id', Auth::user()->id)->get();
+
+        return view('group', compact('groups'));
     }  
       
 }

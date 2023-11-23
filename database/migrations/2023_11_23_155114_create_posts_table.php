@@ -21,6 +21,8 @@ return new class extends Migration
             $table->longText('message');
             $table->integer('comments');
             $table->integer('likes');
+            $table->text('image')->nullable();
+            $table->json('images')->nullable();
             $table->dateTime('created_time');
             $table->timestamps();
         });

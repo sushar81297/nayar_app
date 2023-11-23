@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/ui', function () {
+//     return view('home');
+// });
+
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return view('dashboard');
 // })->name('dashboard');
@@ -30,9 +34,9 @@ Route::controller(FacebookController::class)->group(function(){
 
 
 Route::controller(HomeController::class)->group(function(){
-    Route::get('/home', 'index')->name('home');
+    Route::get('home', 'index')->name('home');
     Route::get('page_post/{id}', 'post')->name('post');
-    Route::get('likecomment/{id}', 'likecomment')->name('likecomment');
+    Route::get('group', 'group')->name('group');
 });
 
 Route::get('login', [AuthController::class, 'index'])->name('login');

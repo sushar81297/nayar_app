@@ -20,6 +20,7 @@ class Page extends Authenticatable
     protected $fillable = [
         'page_name',
         'page_id',
+        'image_url',
         'page_access_token',
         'user_id'
     ];
