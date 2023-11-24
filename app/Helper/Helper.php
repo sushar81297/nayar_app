@@ -27,29 +27,21 @@ class Helper
                 'page_access_token' =>$data->access_token
             ]);
 
-            $post_url = "https://graph.facebook.com/v18.0/".$data->id."/feed?limit=100&access_token=".$data->access_token;
+            $post_url = "https://graph.facebook.com/v18.0/".$data->id."/feed?fields=attachments,story,message,created_time,comments.limit(1).summary(true),likes.limit(1).summary(true)&limit=100&access_token=".$data->access_token;
             $res = $client->get($post_url);
             $resBody = $res->getBody();
             $posts = json_decode($resBody);
 
             foreach ($posts->data as $post) {
-                $images_url = "https://graph.facebook.com/v18.0/".$post->id."/?access_token=".$data->access_token."&fields=attachments";
-                $comment_url = "https://graph.facebook.com/v18.0/".$post->id."/?access_token=".$data->access_token."&fields=comments.limit(100).summary(true)";
-                $like_url = "https://graph.facebook.com/v18.0/".$post->id."/?access_token=".$data->access_token."&fields=likes.limit(100).summary(true)";
-
-                $resImage = $client->get($images_url);
-                $imageBody = $resImage->getBody();
-                $imagedata = json_decode($imageBody);
-
                 $image = null;
                 $images = null;
-                if ($imagedata && isset($imagedata->attachments)) {
-                    if (isset($imagedata->attachments->data[0]) && isset($imagedata->attachments->data[0]->media->image->src)) {
-                        $image = $imagedata->attachments->data[0]->media->image->src;
+                if ($post && isset($post->attachments)) {
+                    if (isset($post->attachments->data[0]) && isset($post->attachments->data[0]->media->image->src)) {
+                        $image = $post->attachments->data[0]->media->image->src;
                     }
-                    if (isset($imagedata->attachments->data[0]) && isset($imagedata->attachments->data[0]->subattachments)) {
+                    if (isset($post->attachments->data[0]) && isset($post->attachments->data[0]->subattachments)) {
                         $images = [];
-                        $imageArr = $imagedata->attachments->data[0]->subattachments;
+                        $imageArr = $post->attachments->data[0]->subattachments;
                         foreach ($imageArr->data as $i) {
                             if (isset($i->media->image->src)) {
                                 $images[] = $i->media->image->src;
@@ -58,22 +50,14 @@ class Helper
                     }
                 }
 
-                $resComment = $client->get($comment_url);
-                $commentBody = $resComment->getBody();
-                $comments = json_decode($commentBody);
-
-                $resLike = $client->get($like_url);
-                $likeBody = $resLike->getBody();
-                $likes = json_decode($likeBody);
-
                 Post::updateOrCreate(['post_id' => $post->id],
                     [
                     'user_id' => $userId,
                     'page_id'=> $data->id,
                     'post_id'=> $post->id,
                     'message'=> optional($post)->message ?? optional($post)->story,
-                    'comments'=> $comments->comments->summary->total_count,
-                    'likes'=> $likes->likes->summary->total_count,
+                    'comments'=> $post->comments->summary->total_count,
+                    'likes'=> $post->likes->summary->total_count,
                     'image'=> $image,
                     'images'=> $images,
                     'created_time' => Carbon::parse($post->created_time)->format('Y-m-d H:i:s')

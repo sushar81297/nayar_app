@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Models\User;
@@ -38,28 +39,21 @@ class FacebookController extends Controller
          
             if($finduser){
                 Helper::setupData($user->id, $user->token, $finduser->id);
-
-                $pages = Page::where('user_id', $finduser->id)->get();
-
                 Auth::login($finduser);
-                
-                return view('home', compact('pages'));
-         
             }else{
-
                 $newUser = User::updateOrCreate(['email' => $user->email],[
                         'name' => $user->name,
                         'facebook_id'=> $user->id,
                         'facebook_token'=> $user->token,
                         'password' => encrypt('123456dummy')
                     ]);
-                
                 Helper::setupData($user->id, $user->token, $newUser->id);
-
                 Auth::login($newUser);
-
-                return view('home', compact('pages'));
             }
+
+            $pages = Page::where('user_id', $finduser->id)->get();
+            return Redirect::route('home')->with(compact('pages'));
+
        
         } catch (Exception $e) {
             dd($e->getMessage());
