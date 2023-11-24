@@ -23,11 +23,11 @@
                 <p>Created Time : <b>{{$post->created_time}}</b></p>
                 @if($post->images)
                     @forelse ($post->images as $key => $value)
-                        <img src="{{$value}}" width="200px"/>
+                        <img src="{{$value}}" width="200px" height="200px"/>
                     @empty
                     @endforelse
                 @elseif($post->image)
-                <img src="{{$post->image}}" width="400px" />
+                <img src="{{$post->image}}" width="200px" height="200px" />
                 @endif
             </div>
         </div>
