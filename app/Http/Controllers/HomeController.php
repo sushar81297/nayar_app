@@ -41,7 +41,7 @@ class HomeController extends Controller
         $page = Page::where('page_id', $request->id)->first();
         $page_name = $page->page_name;
 
-        return view('post', compact('posts', 'page_name'));
+        return view('posts.index', compact('posts', 'page_name'));
     }  
 
     public function group()
@@ -50,5 +50,17 @@ class HomeController extends Controller
 
         return view('group', compact('groups'));
     }  
+
+    public function add(Request $request)
+    {
+        $post = null;
+        return view('posts.create', compact('post'));
+    }  
+
+    public function store(Request $request)
+    {
+        foreach($request->file('files') as $key => $file) {
+        }
+    } 
       
 }

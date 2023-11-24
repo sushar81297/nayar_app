@@ -19,10 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/ui', function () {
-//     return view('home');
-// });
-
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return view('dashboard');
 // })->name('dashboard');
@@ -37,11 +33,13 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('home', 'index')->name('home');
     Route::get('page_post/{id}', 'post')->name('post');
     Route::get('group', 'group')->name('group');
+    Route::get('post/create', 'add')->name('page_post');
+    Route::post('post/create/{id?}', 'store')->name('post.store');
 });
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
-Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
-Route::get('registration', [AuthController::class, 'registration'])->name('register');
-Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 
-Route::get('dashboard', [AuthController::class, 'dashboard']); 
+// Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
+// Route::get('registration', [AuthController::class, 'registration'])->name('register');
+// Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 
+// Route::get('dashboard', [AuthController::class, 'dashboard']); 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

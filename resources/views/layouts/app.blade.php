@@ -53,14 +53,14 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-dark bg-gradient-primary
-          {{ \Route::currentRouteName() === 'home'? 'active' : ''}}" href="/home">
+          <a class="nav-link text-dark
+          {{ \Route::currentRouteName() === 'home' || \Route::currentRouteName() === 'page_post' || \Route::currentRouteName() === 'post'? 'active bg-gradient-primary text-white' : ''}}" href="/home">
             <span class="nav-link-text ms-1">Pages</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-dark
-          {{ \Route::currentRouteName() === 'group'? 'active' : ''}}"  href="/group">
+          {{ \Route::currentRouteName() === 'group'? 'active bg-gradient-primary text-white' : ''}}"  href="/group">
             <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>

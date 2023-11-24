@@ -27,7 +27,7 @@ class Helper
                 'page_access_token' =>$data->access_token
             ]);
 
-            $post_url = "https://graph.facebook.com/v18.0/".$data->id."/feed?fields=attachments,story,message,created_time,comments.limit(1).summary(true),likes.limit(1).summary(true)&limit=100&access_token=".$data->access_token;
+            $post_url = "https://graph.facebook.com/v18.0/".$data->id."/feed?fields=attachments,story,message,created_time,comments.limit(100).summary(true),reactions.limit(100).summary(true)&limit=100&access_token=".$data->access_token;
             $res = $client->get($post_url);
             $resBody = $res->getBody();
             $posts = json_decode($resBody);
@@ -57,7 +57,7 @@ class Helper
                     'post_id'=> $post->id,
                     'message'=> optional($post)->message ?? optional($post)->story,
                     'comments'=> $post->comments->summary->total_count,
-                    'likes'=> $post->likes->summary->total_count,
+                    'likes'=> $post->reactions->summary->total_count,
                     'image'=> $image,
                     'images'=> $images,
                     'created_time' => Carbon::parse($post->created_time)->format('Y-m-d H:i:s')

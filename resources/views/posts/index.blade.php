@@ -9,7 +9,9 @@
             </div>
         </div>
         <div class="col-lg-2">
-            <button class="btn btn-outline-primary btn-sm mb-0 me-3">Create Post</button>
+            <a href="{{ route('page_post') }}">
+                <button class="btn btn-outline-primary btn-sm mb-0 me-3">Create Post</button>
+            </a>
         </div>
     </div>
     @forelse ($posts as $post)
