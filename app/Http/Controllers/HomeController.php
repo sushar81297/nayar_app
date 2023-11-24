@@ -35,13 +35,14 @@ class HomeController extends Controller
      */
     public function post(Request $request)
     {
+        $page_id = $request->id;
         $posts = Post::where('user_id', Auth::user()->id)
-        ->where('page_id', $request->id)->get();
+        ->where('page_id', $page_id)->get();
 
-        $page = Page::where('page_id', $request->id)->first();
+        $page = Page::where('page_id', $page_id)->first();
         $page_name = $page->page_name;
 
-        return view('posts.index', compact('posts', 'page_name'));
+        return view('posts.index', compact('posts', 'page_name', 'page_id'));
     }  
 
     public function group()
@@ -51,16 +52,25 @@ class HomeController extends Controller
         return view('group', compact('groups'));
     }  
 
-    public function add(Request $request)
+    public function add($id)
     {
-        $post = null;
-        return view('posts.create', compact('post'));
+        $page_id = $id;
+        return view('posts.create', compact('page_id'));
     }  
 
     public function store(Request $request)
     {
-        foreach($request->file('files') as $key => $file) {
-        }
+        $photo = new Blob($request->file('file'));
+        dd($photo);
+        $page = Page::where('page_id', $request->page_id)->first();
+
+        $url = "https://graph.facebook.com/v18.0/".$request->page_id."/feed?access_token=".$page->page_access_token;
+        $client = new \GuzzleHttp\Client();
+        $params['headers'] = ['Content-Type' => 'application/x-www-form-urlencoded'];
+        $params['form_params'] = array('message' => $request->message ?? '', 'source' => $request->file('files'));
+        $response = $client->post($url, $params);
+        $resBody = $response->getBody();
+        $groups = json_decode($resBody);
     } 
       
 }

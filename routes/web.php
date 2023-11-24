@@ -33,8 +33,8 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('home', 'index')->name('home');
     Route::get('page_post/{id}', 'post')->name('post');
     Route::get('group', 'group')->name('group');
-    Route::get('post/create', 'add')->name('page_post');
-    Route::post('post/create/{id?}', 'store')->name('post.store');
+    Route::get('post_create/{id}', 'add')->name('post_create');
+    Route::post('post/create', 'store')->name('post.store');
 });
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
