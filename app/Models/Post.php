@@ -33,6 +33,7 @@ class Post extends Authenticatable
         'Wow',
         'Sad',
         'Angry',
+        'Care',
         'created_time'
     ];
 
