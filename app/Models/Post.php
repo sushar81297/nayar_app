@@ -23,9 +23,16 @@ class Post extends Authenticatable
         'message',
         'page_id',
         'comments',
-        'likes',
         'image',
         'images',
+        'status_type',
+        'shared',
+        'Liked',
+        'Love',
+        'Haha',
+        'Wow',
+        'Sad',
+        'Angry',
         'created_time'
     ];
 

@@ -10,7 +10,7 @@ class Helper
 {
     public static function setupData($facebook_id, $facebook_token, $userId)
     {
-        $page_url = "https://graph.facebook.com/v18.0/".$facebook_id."/accounts?access_token=".$facebook_token."&fields=picture,id,name,access_token";
+        $page_url = "https://graph.facebook.com/v18.0/".$facebook_id."/accounts?access_token=".$facebook_token."&fields=picture,id,name,access_token,fan_count";
 
         $client = new \GuzzleHttp\Client();
         $response = $client->get($page_url);
@@ -24,44 +24,63 @@ class Helper
                 'page_id'=> $data->id,
                 'page_name'=> $data->name,
                 'image_url'=> $data->picture->data->url,
+                'fan_count'=> $data->fan_count,
                 'page_access_token' =>$data->access_token
             ]);
 
-            $post_url = "https://graph.facebook.com/v18.0/".$data->id."/feed?fields=attachments,story,message,created_time,comments.limit(100).summary(true),reactions.limit(100).summary(true)&limit=100&access_token=".$data->access_token;
+            $param = "attachments,created_time,story,message,shares,status_type,comments.limit(100).summary(true),insights.metric(post_reactions_by_type_total)";
+            $post_url = "https://graph.facebook.com/v18.0/".$data->id."/feed?fields=".$param."&access_token=".$data->access_token;
             $res = $client->get($post_url);
             $resBody = $res->getBody();
             $posts = json_decode($resBody);
 
             foreach ($posts->data as $post) {
-                $image = null;
-                $images = null;
-                if ($post && isset($post->attachments)) {
-                    if (isset($post->attachments->data[0]) && isset($post->attachments->data[0]->media->image->src)) {
-                        $image = $post->attachments->data[0]->media->image->src;
-                    }
-                    if (isset($post->attachments->data[0]) && isset($post->attachments->data[0]->subattachments)) {
-                        $images = [];
-                        $imageArr = $post->attachments->data[0]->subattachments;
-                        foreach ($imageArr->data as $i) {
-                            if (isset($i->media->image->src)) {
-                                $images[] = $i->media->image->src;
+                if ($post) {
+                    $image = null;
+                    $images = null;
+                    if ($post && isset($post->attachments)) {
+                        if (isset($post->attachments->data[0]) && isset($post->attachments->data[0]->media->image->src)) {
+                            $image = $post->attachments->data[0]->media->image->src;
+                        }
+                        if (isset($post->attachments->data[0]) && isset($post->attachments->data[0]->subattachments)) {
+                            $images = [];
+                            $imageArr = $post->attachments->data[0]->subattachments;
+                            foreach ($imageArr->data as $i) {
+                                if (isset($i->media->image->src)) {
+                                    $images[] = $i->media->image->src;
+                                }
                             }
                         }
                     }
-                }
 
-                Post::updateOrCreate(['post_id' => $post->id],
-                    [
-                    'user_id' => $userId,
-                    'page_id'=> $data->id,
-                    'post_id'=> $post->id,
-                    'message'=> optional($post)->message ?? optional($post)->story,
-                    'comments'=> $post->comments->summary->total_count,
-                    'likes'=> $post->reactions->summary->total_count,
-                    'image'=> $image,
-                    'images'=> $images,
-                    'created_time' => Carbon::parse($post->created_time)->format('Y-m-d H:i:s')
-                ]);
+                    $shares = 0;
+                    if ($post && isset($post->shares)) {
+                        $shares = $post->shares->count;
+                    }
+
+                    $reaction = $post->insights->data[0]->values[0]->value;
+    
+                    Post::updateOrCreate(['post_id' => $post->id],
+                        [
+                        'user_id' => $userId,
+                        'page_id'=> $data->id,
+                        'post_id'=> $post->id,
+                        'message'=> optional($post)->message ?? optional($post)->story,
+                        'comments'=> $post->comments->summary->total_count,
+                        'status_type'=> $post->status_type,
+                        'Liked'=> $reaction->like ?? 0,
+                        'Love'=> $reaction->love ?? 0,
+                        'Haha'=> $reaction->haha ?? 0,
+                        'Wow'=> $reaction->wow ?? 0,
+                        'Angry'=> $reaction->angry ?? 0,
+                        'Sad'=> $reaction->sad ?? 0,
+                        'Care'=> $reaction->care ?? 0,
+                        'shared'=> $shares,
+                        'image'=> $image,
+                        'images'=> $images,
+                        'created_time' => Carbon::parse($post->created_time)->format('Y-m-d H:i:s')
+                    ]);
+                }
             }
         }
 
