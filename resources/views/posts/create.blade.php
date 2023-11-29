@@ -16,7 +16,7 @@
                     </div>
                     <label>Upload Image</label>
                     <div class="input-group input-group-outline mb-3">
-                        <input type="file" name="file" id="file" multiple />
+                        <input type="file" name="file" id="file" />
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Create Post</button>

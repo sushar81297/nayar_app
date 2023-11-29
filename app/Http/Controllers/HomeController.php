@@ -89,28 +89,30 @@ class HomeController extends Controller
 
     public function store(Request $request)
     {
-        // $photo = new Blob($request->file('file'));
         $page = Page::where('page_id', $request->page_id)->first();
 
         if ($request->file('file')) {
-            $url = "https://graph.facebook.com/v18.0/me/photos?access_token=".$page->page_access_token;
-            $client = new \GuzzleHttp\Client();
-            $params['headers'] = ['Content-Type' => 'application/x-www-form-urlencoded'];
-            $params['form_params'] = array('message' => $request->message ?? '', 'source' => $request->file('files'));
-            $response = $client->post($url, $params);
-            $body = $response->getBody();
+            $url = "https://graph.facebook.com/v18.0/me/photos?access_token=EABax6Tm1ZApcBOZBLdPgMMF1lZAANApYZAA1P5auMsDkNCSiHZAEFo1t2ZBPrepIdbl4UBLLZCKSTe3NKxRCPAXv6miqG295ZBGJWEunMwca68Oabi94wQfvwAJhZCrnUGGk2l8sDCoCZB2tKC6jLT93hCX9ptBpZCksMxfLLywgAc7rZCtX95uADPThj6eVZAx9mGtIZD&message";
+
+            $message = $request->message;
+            $filePath = $request->file('file');
+    
+            $command = "curl -X POST -H 'Content-Type: multipart/form-data' -F 'message={$message}' -F 'file=@{$filePath}' {$url}";
+            $response = shell_exec($command);
+            $data = json_decode($response);
         } else {
-            $url = "https://graph.facebook.com/v18.0/".$request->page_id."/feed?access_token=".$page->page_access_token;
-            $client = new \GuzzleHttp\Client();
-            $params['headers'] = ['Content-Type' => 'application/x-www-form-urlencoded'];
-            $params['form_params'] = array('message' => $request->message ?? '', 'source' => $request->file('files'));
-            $response = $client->post($url, $params);
-            $body = $response->getBody();
+            $url = "https://graph.facebook.com/v18.0/".$request->page_id."/feed?access_token=EABax6Tm1ZApcBOZBLdPgMMF1lZAANApYZAA1P5auMsDkNCSiHZAEFo1t2ZBPrepIdbl4UBLLZCKSTe3NKxRCPAXv6miqG295ZBGJWEunMwca68Oabi94wQfvwAJhZCrnUGGk2l8sDCoCZB2tKC6jLT93hCX9ptBpZCksMxfLLywgAc7rZCtX95uADPThj6eVZAx9mGtIZD&message";
+
+            $message = $request->message;
+    
+            $command = "curl -X POST -H 'Content-Type: multipart/form-data' -F 'message={$message}' {$url}";
+            $response = shell_exec($command);
+            $data = json_decode($response);
         }
-
-        $data = json_decode($body);
-
-        $post_url = "https://graph.facebook.com/v18.0/".$data->id."?fields=attachments,story,message,created_time,comments.limit(100).summary(true),reactions.limit(100).summary(true)&access_token=".$page->page_access_token;
+        $data_id = $data->id;
+        if ($data && isset($data->post_id)) $data_id = $data->post_id;
+        $client = new \GuzzleHttp\Client();
+        $post_url = "https://graph.facebook.com/v18.0/".$data_id."?fields=attachments,story,message,created_time,comments.limit(100).summary(true),reactions.limit(100).summary(true)&access_token=".$page->page_access_token;
         $res = $client->get($post_url);
         $resBody = $res->getBody();
         $post_data = json_decode($resBody);
