@@ -14,10 +14,10 @@
                     <div class="input-group input-group-outline my-3">
                         <input type="text" class="form-control" name="message">
                     </div>
-                    <!-- <label>Upload Image</label>
+                    <label>Upload Image</label>
                     <div class="input-group input-group-outline mb-3">
                         <input type="file" name="file" id="file" multiple />
-                    </div> -->
+                    </div>
                     <div class="text-center">
                         <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Create Post</button>
                     </div>

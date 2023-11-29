@@ -17,6 +17,16 @@ class Helper
         $body = $response->getBody();
         $datas = json_decode($body);
 
+         // reset data
+         $posts = Post::where('user_id', $userId)->get();
+         foreach ($posts as $post) {
+             if ($post) $post->delete();
+         }
+         $pages = Page::where('user_id', $userId)->get();
+         foreach ($pages as $page) {
+             if ($page) $page->delete();
+         }
+
         foreach ($datas->data as $data) {
             Page::updateOrCreate(['page_id' => $data->id],
                 [

@@ -92,12 +92,22 @@ class HomeController extends Controller
         // $photo = new Blob($request->file('file'));
         $page = Page::where('page_id', $request->page_id)->first();
 
-        $url = "https://graph.facebook.com/v18.0/".$request->page_id."/feed?access_token=".$page->page_access_token;
-        $client = new \GuzzleHttp\Client();
-        $params['headers'] = ['Content-Type' => 'application/x-www-form-urlencoded'];
-        $params['form_params'] = array('message' => $request->message ?? '', 'source' => $request->file('files'));
-        $response = $client->post($url, $params);
-        $body = $response->getBody();
+        if ($request->file('file')) {
+            $url = "https://graph.facebook.com/v18.0/me/photos?access_token=".$page->page_access_token;
+            $client = new \GuzzleHttp\Client();
+            $params['headers'] = ['Content-Type' => 'application/x-www-form-urlencoded'];
+            $params['form_params'] = array('message' => $request->message ?? '', 'source' => $request->file('files'));
+            $response = $client->post($url, $params);
+            $body = $response->getBody();
+        } else {
+            $url = "https://graph.facebook.com/v18.0/".$request->page_id."/feed?access_token=".$page->page_access_token;
+            $client = new \GuzzleHttp\Client();
+            $params['headers'] = ['Content-Type' => 'application/x-www-form-urlencoded'];
+            $params['form_params'] = array('message' => $request->message ?? '', 'source' => $request->file('files'));
+            $response = $client->post($url, $params);
+            $body = $response->getBody();
+        }
+
         $data = json_decode($body);
 
         $post_url = "https://graph.facebook.com/v18.0/".$data->id."?fields=attachments,story,message,created_time,comments.limit(100).summary(true),reactions.limit(100).summary(true)&access_token=".$page->page_access_token;
