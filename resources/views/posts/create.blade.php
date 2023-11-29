@@ -9,14 +9,11 @@
             <form class="text-start" action="{{ route('post.store') }}" method="POST"
                     accept-charset="utf-8" enctype="multipart/form-data">
                     <input type="text" hidden value="{{$page_id}}" class="form-control" name="page_id">
-                    <label>Title</label>
-                    <div class="input-group input-group-outline my-3">
-                        {{-- <input type="text" class="form-control" name="message"> --}}
-                        <input type="text" name="" id="" class="form-control">                    
-                    </div>
+                    
+                        
                     @csrf
                     <input type="text" hidden value="{{$page_id}}" class="form-control" name="page_id">
-                    <label>Description</label>
+                    <label>Content</label>
                     <div class="input-group input-group-outline my-3">
                         {{-- <input type="text" class="form-control" name="message"> --}}
                         <textarea name="" id="" cols="100" rows="10" class="form-control"></textarea>
