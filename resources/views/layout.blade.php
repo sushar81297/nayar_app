@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/nayar_logo.png')}}">
+    <link rel="icon" href="{{ URL::asset('/assets/img/nayar_logo.png') }}" type="image/x-icon"/>
     <title>Nayar</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
