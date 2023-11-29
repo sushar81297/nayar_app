@@ -63,10 +63,10 @@ class HomeController extends Controller
         return view('group', compact('groups'));
     }  
 
-    public function add($id)
+    public function add()
     {
-        $page_id = $id;
-        return view('posts.create', compact('page_id'));
+        $pages = Page::where('user_id', Auth::user()->id)->get();
+        return view('posts.create', compact('pages'));
     }  
 
     public function delete($id)

@@ -41,6 +41,7 @@
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
   {{-- High chart cdn --}}
   <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 </head>
 
@@ -73,7 +74,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark">
+          <a class="nav-link text-dark
+          {{ \Route::currentRouteName() === 'post_create'? 'active bg-gradient-primary text-white' : ''}}"  href="/post/create">
             <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>

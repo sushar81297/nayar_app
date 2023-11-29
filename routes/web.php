@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\FacebookController;
 use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +33,7 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('post/list', 'postList')->name('post.list');
     Route::get('page_post/{id}', 'post')->name('post');
     Route::get('group', 'group')->name('group');
-    Route::get('post_create/{id}', 'add')->name('post_create');
+    Route::get('post/create', 'add')->name('post_create');
     Route::get('post/delete/{id}', 'delete')->name('post.delete');
     Route::post('post/create', 'store')->name('post.store');
 });
