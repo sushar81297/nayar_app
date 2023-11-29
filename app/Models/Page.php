@@ -21,6 +21,7 @@ class Page extends Authenticatable
         'page_name',
         'page_id',
         'image_url',
+        'fan_count',
         'page_access_token',
         'user_id'
     ];

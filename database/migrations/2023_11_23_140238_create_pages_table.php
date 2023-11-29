@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('page_id');
             $table->integer('user_id');
             $table->string('page_name');
+            $table->integer('fan_count');
             $table->text('image_url');
             $table->text('page_access_token');
             $table->timestamps();
