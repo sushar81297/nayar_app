@@ -18,10 +18,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<<<<<<< HEAD
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/nayar_logo.png">
   <link rel="icon" type="image/png" href="../assets/img/nayar_logo.png">
+=======
+  <link rel="apple-touch-icon" sizes="76x76" href=".../assets/img/nayar_logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/img/nayar_logo.png')}}">
+>>>>>>> 957f1213d10cd153ad805aa24b2d0ba34ae410d3
   <title>
-    NayarFB Crawler
+    Nayar
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -59,20 +64,29 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link text-dark 
+          {{ \Route::currentRouteName() === 'post.list'? 'active bg-gradient-primary text-white' : ''}}" href="/post/list">
+            <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Post List</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark">
+            <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Create Post</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link text-dark
           {{ \Route::currentRouteName() === 'group'? 'active bg-gradient-primary text-white' : ''}}"  href="/group">
             <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
             <span class="nav-link-text ms-1">Groups</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark ">
-            <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Page List</span>
           </a>
         </li>
         <li class="nav-item">

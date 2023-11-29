@@ -10,8 +10,8 @@
                 <div> 
                     <div class="profile-header-container" style="height:150px;">
                         <div class="profile-header-img">
-                            <img class="img-circle" style="width:100px;"src="{{$page->image_url}}">
-                            <a href="/page_post/{{$page->page_id}}"><label for="" style="font-weight:700;padding:7px;min-width:105px;">{{$page->page_name}}</label></a>
+                          <img class="img-circle" style="width:100px;"src="{{$page->image_url}}">
+                          <a href="/page_post/{{$page->page_id}}"><label for="" style="font-weight:700;padding:7px;min-width:105px;">{{$page->page_name}}</label></a>
                         </div>
                     </div> 
                     <div style="text-align:center;">

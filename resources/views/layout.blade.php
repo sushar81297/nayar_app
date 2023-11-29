@@ -49,7 +49,7 @@
     </style>
 </head>
 <body>
-    
+{{--     
 <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
     <div class="container">
         <a class="navbar-brand" href="#">Nayar</a>
@@ -63,9 +63,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">Register</a>
-                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link">Register</a>
+                    </li> -->
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}">Logout</a>
@@ -75,7 +75,7 @@
   
         </div>
     </div>
-</nav>
+</nav> --}}
   
 @yield('content')
      

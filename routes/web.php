@@ -15,9 +15,6 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return view('dashboard');
@@ -31,13 +28,17 @@ Route::controller(FacebookController::class)->group(function(){
 
 Route::controller(HomeController::class)->group(function(){
     Route::get('home', 'index')->name('home');
+    Route::get('/', 'index')->name('home');
+    Route::get('post/list', 'postList')->name('post.list');
     Route::get('page_post/{id}', 'post')->name('post');
     Route::get('group', 'group')->name('group');
-    Route::get('post/create', 'add')->name('page_post');
-    Route::post('post/create/{id?}', 'store')->name('post.store');
+    Route::get('post_create/{id}', 'add')->name('post_create');
+    Route::get('post/delete/{id}', 'delete')->name('post.delete');
+    Route::post('post/create', 'store')->name('post.store');
 });
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
 Route::get('registration', [AuthController::class, 'registration'])->name('register');
 Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 

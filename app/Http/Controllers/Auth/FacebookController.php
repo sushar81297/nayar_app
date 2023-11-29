@@ -36,10 +36,12 @@ class FacebookController extends Controller
             $facebook_token = $user->token;
          
             $finduser = User::where('facebook_id', $user->id)->first();
+
          
             if($finduser){
                 Helper::setupData($user->id, $user->token, $finduser->id);
                 Auth::login($finduser);
+                $pages = Page::where('user_id', $finduser->id)->get();
             }else{
                 $newUser = User::updateOrCreate(['email' => $user->email],[
                         'name' => $user->name,
@@ -48,10 +50,10 @@ class FacebookController extends Controller
                         'password' => encrypt('123456dummy')
                     ]);
                 Helper::setupData($user->id, $user->token, $newUser->id);
+                $pages = Page::where('user_id', $newUser->id)->get();
                 Auth::login($newUser);
             }
 
-            $pages = Page::where('user_id', $finduser->id)->get();
             return Redirect::route('home')->with(compact('pages'));
 
        
