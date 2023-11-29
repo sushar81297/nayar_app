@@ -1,6 +1,7 @@
 @extends('layout')
   
 @section('content')
+
 <main class="login-form">
   <div class="cotainer">
       <div class="row justify-content-center">
